@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{title}}</title>
+{{! change the following to desired font used in the document }}
+<link href="https://fonts.googleapis.com/css?family=Crimson+Text" rel="stylesheet">
+<style>
+    {{& style}}
+    {{! put custom styles below this line or use <link> }}
+</style>
+</head>
+<body>
+  <nav>
+    <ul class="menu">
+        {{#menu_items}}
+            <li><a href="{{ href }}">{{ title }}</a></li>
+        {{/menu_items}}
+    </ul>
+  </nav>
+  <article>
+    {{#body}}
+        {{& body}}
+    {{/body}}
+  </article>
+</body>
+</html>
