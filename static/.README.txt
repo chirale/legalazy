@@ -1,0 +1,2 @@
+Files in this directory will be available to the /static/ path.
+Do not expose here sensible information.
