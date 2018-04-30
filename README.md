@@ -9,13 +9,16 @@ JournaKit Legalazy is developed using these free/libre open source software.
 
 On client:
 
-  * LibreOffice (ver. 5.4)
+  * [LibreOffice](https://www.libreoffice.org/) (ver. 5.4)
+
+On development:
+  * [DB Browser for SQLite](http://sqlitebrowser.org/)
 
 On server:
 
-  * nginx
-  * gunicorn
-  * GNU/Linux
+  * [nginx](https://nginx.org/)
+  * [gunicorn](http://gunicorn.org/)
+  * [GNU/Linux](https://en.wikipedia.org/wiki/Linux_distribution)
 
 You can use any other compatible alternative (e.g. OpenOffice on client and Apache as server) but examples and tests you'll find in this document assume you're using these.
 
