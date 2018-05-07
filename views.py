@@ -83,7 +83,12 @@ def pages(slug):
             newdoc['body'] += str(element)
         if not is_404 and settings.KEEP_DOCUMENT_STYLES:
             # Do not use styles for 404
-            newdoc['style'] = utilities.css_wrap_doc_container_id(soup.head.select('style')[0].text)
+            if settings.AUTODETECT_EXTERNAL_FONTS:
+                auto_generated_css = soup.head.select('style')[0].text
+                newdoc['external_fonts'] = \
+                    [settings.GOOGLE_FONTS_PATTERN.format(item.replace(' ', settings.GOOGLE_FONTS_WHITESPACE))
+                        for item in utilities.sift_gfonts(utilities.extract_fonts(auto_generated_css))]
+            newdoc['style'] = utilities.css_wrap_doc_container_id(auto_generated_css)
         else:
             newdoc['status'] = 404
     except TypeError:
