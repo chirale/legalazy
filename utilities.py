@@ -46,7 +46,7 @@ def menu_items(**kwargs):
     except AssertionError:
         return
     for row in dbsession.query(models.Page).\
-            filter(models.Page.in_nav is True).\
+            filter(models.Page.in_nav == 1).\
             order_by(models.Page.nav_order):
         title = row.title
         yield dict(
