@@ -95,3 +95,7 @@ def pages(slug):
         # document not specified, empty fallback
         pass
     return render_template('base', **newdoc)
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
