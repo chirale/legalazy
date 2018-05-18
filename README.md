@@ -8,14 +8,13 @@ Transform on-the-fly your [OpenDocument](https://www.libreoffice.org/discover/wh
 JournaKit Legalazy is developed using these free/libre open source software.
 
 On client:
-
   * [LibreOffice](https://www.libreoffice.org/) (ver. 5.4)
 
-On development:
-  * [DB Browser for SQLite](http://sqlitebrowser.org/)
+To edit data.db on development:
+  * [DB Browser for SQLite](http://sqlitebrowser.org/) or
+  * [DBeaver](https://dbeaver.io/download/)
 
 On server:
-
   * [nginx](https://nginx.org/)
   * [gunicorn](http://gunicorn.org/)
   * [GNU/Linux](https://en.wikipedia.org/wiki/Linux_distribution)
