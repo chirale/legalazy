@@ -13,6 +13,9 @@ MENU_INCLUDE_FRONT_NAME = True
 MENU_FRONT_NAME_SEPARATOR = ' | '
 DOC_CONTAINER_ID = 'legalazy-content'
 KEEP_DOCUMENT_STYLES = True
+# drop document styles for these types
+#   application/json
+KEEP_DOCUMENT_STYLES_APPLICATION_JSON = False
 # Parse the OpenDocument to find publicly available font families
 AUTODETECT_EXTERNAL_FONTS = True
 # 3rd party

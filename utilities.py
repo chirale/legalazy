@@ -4,6 +4,7 @@ import sass
 import re
 import requests
 
+
 def is_front(page):
     """
     :param page: Page row.

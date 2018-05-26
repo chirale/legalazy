@@ -7,19 +7,11 @@ from odf.odf2xhtml import ODF2XHTML
 import io
 from os import path
 from bs4 import BeautifulSoup
-from flask_stache import render_view, render_template
+from flask_stache import render_template
+from flask import request
+from serverequestedcontent import ServeRequestedContent
 
 app = Flask(__name__)
-
-"""
-@app.route('/')
-def pages(slug):
-    db = models.DocuwebDb()
-    dbsession = db.sessionmaker()
-    newdoc = dict(style='', body='', nav='', title='', status=200)
-    front_page = dbsession.query(models.Page).get(settings.FRONT_SLUG)
-    newdoc = dict(title=front_page.title)
-"""
 
 
 @app.route('/')
@@ -65,36 +57,25 @@ def pages(slug):
         filename = current_page.file
         # get the full document file path
         fullfilepath = path.join(docs_directory, filename)
-        #####################
-        """
-        @TODO https://docs.python.org/3/library/html.parser.html
-        OPPURE
-        https://www.crummy.com/software/BeautifulSoup/bs4/doc/
-            https://stackoverflow.com/a/11918151
-        """
         odhandler = ODF2XHTML()
         # convert OpenDocument to XHTML with python3-odfpy
         result = odhandler.odf2xhtml(fullfilepath)
         outf.write(result.encode('utf-8'))
         html_doc = outf.getvalue().decode('utf-8')
-        # parse the HTML document to get body and style
-        soup = BeautifulSoup(html_doc, 'html.parser')
-        for element in soup.select('body > *'):
-            newdoc['body'] += str(element)
-        if not is_404 and settings.KEEP_DOCUMENT_STYLES:
-            # Do not use styles for 404
-            if settings.AUTODETECT_EXTERNAL_FONTS:
-                auto_generated_css = soup.head.select('style')[0].text
-                newdoc['external_fonts'] = \
-                    [settings.GOOGLE_FONTS_PATTERN.format(item.replace(' ', settings.GOOGLE_FONTS_WHITESPACE))
-                        for item in utilities.sift_gfonts(utilities.extract_fonts(auto_generated_css))]
-            newdoc['style'] = utilities.css_wrap_doc_container_id(auto_generated_css)
-        else:
-            newdoc['status'] = 404
+        # Parse the HTML document to get body and style.
+        # Different results based on Accept: text/html | application/json
+        print(request.headers['Accept'])
+        rqc = ServeRequestedContent(
+            soup=BeautifulSoup(html_doc, 'html.parser'),
+            request_headers=request.headers['Accept'].split(',')[0].split(';')[0],
+            docdict=newdoc,
+            is_404=is_404
+        )
+        return rqc.render()
     except TypeError:
-        # document not specified, empty fallback
-        pass
-    return render_template('base', **newdoc)
+        # document not specified, error
+        newdoc['status'] = 500
+        return render_template('base', **newdoc)
 
 
 if __name__ == "__main__":
