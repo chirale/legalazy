@@ -8,7 +8,7 @@ Transform on-the-fly your [OpenDocument](https://www.libreoffice.org/discover/wh
 JournaKit Legalazy is developed using these free/libre open source software.
 
 On client:
-  * [LibreOffice](https://www.libreoffice.org/) (ver. 5.4)
+  * [LibreOffice](https://www.libreoffice.org/) (ver. >= 5.4)
 
 To edit data.db on development:
   * [DB Browser for SQLite](http://sqlitebrowser.org/) or
@@ -112,6 +112,33 @@ You can use this feature to choose a free font from [Google Fonts](https://fonts
 The example.odt provides an example involving the use of the neat font [Crimison Text](https://fonts.google.com/specimen/Crimson+Text) by S. Kosch.
 
 Once you have added the reference to the web font on the web template, declarations made inside LibreOffice will be applied on the web page as well.
+
+## Plain text version
+
+To easily integrate Legalazy with [textarea](https://developer.mozilla.org/it/docs/Web/HTML/Element/textarea) elements, 
+a plain text alternative version of every page is available using the 
+[Accept HTTP header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept).
+
+On a valid path, try:
+```
+curl -X GET -H 'Accept: application/json' -i 'http://127.0.0.1:5000/privacy'
+```
+
+to get a Json response like this:
+```
+{ "body": "Body content \n\n converted in plain text", 
+  "title": "Pagename | Sitename",
+  "style": "parsed CSS goes here"
+}
+```
+
+By default, "style" doesn't appear in results to reduce payload but it can be enabled setting:
+```
+KEEP_DOCUMENT_STYLES_APPLICATION_JSON = True
+```
+
+A simple [AJAX call](https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX) can fill the textarea using the Accept 
+header preserving site paths.
 
 ## Settings
 

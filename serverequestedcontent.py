@@ -12,7 +12,6 @@ class ServeRequestedContent:
         :param kwargs:
 
         """
-        print('init')
         self.soup = kwargs.get('soup', None)
         self.request_headers = kwargs.get('request_headers', None)
         self.keep_document_styles = kwargs.get('keep_document_styles', True)
@@ -20,15 +19,12 @@ class ServeRequestedContent:
         self.is_404 = kwargs.get('is_404', True)
         self.is_html = True if self.request_headers == 'text/html' else False
         self.funcname_suffix = self.request_headers.replace("/", "_")
-        """
-        print(self.funcname_suffix)
         self.varname_keep_document_styles = "KEEP_DOCUMENT_STYLES_{}".format(self.funcname_suffix.upper())
         local_keep_document_styles = getattr(settings, self.varname_keep_document_styles.upper(), None)
-        self.keep_document_styles = local_keep_document_styles if local_keep_document_styles else self.keep_document_styles
-        """
+        # KEEP_DOCUMENT_STYLES_*, per mime-type override
+        self.keep_document_styles = local_keep_document_styles \
+            if local_keep_document_styles else self.keep_document_styles
         self.keep_document_styles = settings.KEEP_DOCUMENT_STYLES
-        print(self.request_headers)
-        print("get_content_{}".format(self.funcname_suffix))
 
     def render(self):
         """
@@ -57,9 +53,10 @@ class ServeRequestedContent:
         return render_template('base', **self.docdict)
 
     def get_content_application_json(self):
-        print(self.docdict)
         return jsonify(dict(
             body=self.soup.body.get_text(),
-            title=self.docdict['title']
+            title=self.docdict['title'],
+            style='' if not self.keep_document_styles else utilities.css_wrap_doc_container_id(
+                self.soup.head.select('style')[0].text
+            )
         ))
-        # return jsonify(self.soup.get_text())
