@@ -11,4 +11,4 @@ pystache==0.5.4
 requests>=2.20.0
 six==1.11.0
 SQLAlchemy>1.2.7
-Werkzeug==0.14.1
+Werkzeug==0.15.3
