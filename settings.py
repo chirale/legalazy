@@ -4,6 +4,7 @@ To apply these settings, you have to restart Flask.
 # Directories
 DATA_DIRECTORY = 'data'
 DOCUMENT_DIRECTORY = 'docs'
+INDEX_ODS = 'index.ods'
 # TEMPLATE_DIRECTORY = 'templates'
 # Files
 BASE_TEMPLATE = 'base.html'

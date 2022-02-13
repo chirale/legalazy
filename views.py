@@ -10,9 +10,24 @@ from bs4 import BeautifulSoup
 from flask_stache import render_template
 from flask import request
 from serverequestedcontent import ServeRequestedContent
+from pandas_ods_reader import read_ods
 
 app = Flask(__name__)
 
+@app.route('/ods')
+def index_ods():
+    slug = "ods"
+    is_404 = False
+    db = models.DocuwebDb()
+    dbsession = db.sessionmaker()
+    menu = utilities.menu_items(dbsession=dbsession, slug=slug)
+    newdoc = dict(style='', body='', nav='', title='', status=200, is_front=False, menu_items=menu)
+    filepath = "{}/{}".format(settings.DOCUMENT_DIRECTORY, settings.INDEX_ODS)
+    # load a sheet based on its name
+    sheet_name = "pages"  # pages|config
+    df = read_ods(filepath, sheet_name)
+    newdoc['body'] = "<pre>{}</pre>".format(df.to_string())
+    return render_template('base', **newdoc)
 
 @app.route('/')
 def front():
